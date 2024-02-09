@@ -155,6 +155,7 @@ app.use('/api/v1',fixtureRoutes)
 
 // mongodb connection
 DB_URL = "mongodb+srv://viralmodi228:fuPxzsYwVUAVltcw@sports.ukhjae6.mongodb.net/sports"
+// DB_URL = "mongodb://127.0.0.1:27017/sports"
 const db = mongoose.connect(DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

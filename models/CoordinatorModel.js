@@ -10,6 +10,9 @@ const coordinatorSchema = new Schema({
     },
     sport:{
         type:String
+    },
+    role:{
+        type:Number
     }
 })
 

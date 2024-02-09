@@ -7,7 +7,8 @@ const addCoordinator = async(req, res) => {
     const coordinatorData = {
         id:req.body.id,
         password:encryptPassword.encryptPassword(req.body.password),
-        sport:req.body.sport
+        sport:req.body.sport,
+        role:req.body.role
     } 
     try {
         const coordinator = new coordinatorModel(coordinatorData);
@@ -34,24 +35,16 @@ const loginCoordinator = async(req ,res) => {
     const id = req.body.id;
     const password = req.body.password;
     const sport = req.body.sport;
-    console.log(id,password)
     const coordinator = await coordinatorModel.findOne({ id: id });
-    console.log("coordinator", coordinator);
 
     if (coordinator) {
         const flag = encryptPassword.comparePassword(password, coordinator.password);
-        console.log(flag);
         if (flag) {
-            // generating token
             const token = tokenUtil.generateToken(coordinator.toObject())
-            console.log(token)
-            // saving token to database for security purpose
-
             const saveToken = {
               token:token,
               coordinator:coordinator._id
             }
-
             const dbtoken = new authModel(saveToken);
             await dbtoken.save();
 
@@ -99,9 +92,31 @@ const listAllCoordinators = async(req,res) => {
         })
     }
 }
+const getRole = async(req,res) => {
+    try{
+        const role = await coordinatorModel.findById(req.params.id);
+        if(role){
+            res.status(200).json({
+                message:"role fetched successfully",
+                data:role
+            })
+        }else{
+            res.status(404).json({
+                message: "some error occured in fetching coordinators",
+                data: []
+            })
+        }
+    }catch(err){
+        res.status(500).json({
+            error:err,
+            message:"some error occured in database"
+        })
+    }
+}
 
 module.exports = {
     addCoordinator,
     loginCoordinator,
-    listAllCoordinators
+    listAllCoordinators,
+    getRole
 }

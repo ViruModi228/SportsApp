@@ -6,5 +6,6 @@ const authMiddleWare = require('../middleware/AuthMiddleware')
 router.post("/coordinator",coordinatorController.addCoordinator)
 router.post("/coordinator/login",coordinatorController.loginCoordinator)
 router.get("/coordinator/list",authMiddleWare.authUser,coordinatorController.listAllCoordinators)
+router.get("/coordinator/role/:id",coordinatorController.getRole)
 
 module.exports = router
